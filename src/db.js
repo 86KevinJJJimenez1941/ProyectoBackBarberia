@@ -5,7 +5,6 @@ async function connection() {
     const dbName = "BarberiaKevin";
     await mongoose.connect(
       `mongodb+srv://kevin:kevin@atlascluster.d7pjldm.mongodb.net/${dbName}?retryWrites=true&w=majority`
-      //`mongodb+srv://kevinproyectos1941:1234@prokevinb.lyvtrjs.mongodb.net/${dbName}?retryWrites=true&w=majority`
 
     );
     console.log("Base de datos Mongo conectada");
