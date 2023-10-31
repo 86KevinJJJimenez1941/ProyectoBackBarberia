@@ -87,26 +87,19 @@ app.post("/user/services/guardado", async (req, res) => {
   try {
     const { identification_number, type_service, price } = req.body;
 
-    if (!identification_number || !type_service || !price) {
-      return res.status(400).json({ error: "Todos los campos son obligatorios" });
-    }
-
-    // Crear un nuevo documento de servicio
     const newService = new Services({
       identification_number,
       type_service,
       price
     });
 
-    // Guardar el documento en la base de datos
     const savedService = await newService.save();
 
     res.json({ message: "Registro de servicio exitoso", service: savedService });
-  }catch (error) {
-    console.log("Error", error)
-    res.status(500).json({ error: "Error al registrar el servicio"});
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).json({ error: "Error al registrar el servicio" });
   }
-
 });
 
 module.exports = { app, port };

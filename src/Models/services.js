@@ -3,18 +3,17 @@ const mongoose = require("mongoose");
 const ServicesSchemma = new mongoose.Schema({
   identification_number: {
     type: Number,
-    required: true,
-    unique: true,
+    unique: false, // Modificado para permitir valores duplicados
   },
   type_service: {
     type: String,
     required: true,
-    unique: true,
+    unique: false, // Modificado para permitir valores duplicados
   },
   price: {
     type: Number,
     required: true,
-    unique: true,
+    unique: false, // Modificado para permitir valores duplicados
   }
 });
 
