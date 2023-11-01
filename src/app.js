@@ -102,4 +102,21 @@ app.post("/user/services/guardado", async (req, res) => {
   }
 });
 
+app.get("/user/services/count", async (req, res) => {
+  try {
+    const { identification_number } = req.query;
+
+    if (!identification_number) {
+      return res.status(400).json({ error: "Se requiere el parámetro 'identification_number' en la consulta" });
+    }
+    
+    const count = await Services.countDocuments({ identification_number: identification_number });
+
+    res.json({ count });
+  } catch (error) {
+    console.log("Error:", error);
+    res.status(500).json({ error: "Error al realizar la consulta en la base de datos" });
+  }
+});
+
 module.exports = { app, port };
