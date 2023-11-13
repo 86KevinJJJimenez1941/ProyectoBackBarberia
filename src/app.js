@@ -112,12 +112,15 @@ app.get("/user/services/stats", async (req, res) => {
 
     const services = await Services.find({ identification_number: identification_number });
 
-    res.json({ services });
+    const totalIdentificationNumbers = services.length; // Cambio aquí para contar todos los identification_number
+
+    const totalPrice = services.reduce((sum, service) => sum + (service.price || 0), 0);
+
+    res.json({ totalIdentificationNumbers, totalPrice });
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Error al realizar la consulta en la base de datos" });
   }
 });
-
 
 module.exports = { app, port };
