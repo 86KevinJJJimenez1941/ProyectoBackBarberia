@@ -109,28 +109,12 @@ app.get("/user/services/stats", async (req, res) => {
     if (!identification_number) {
       return res.status(400).json({ error: "Se requiere el parámetro 'identification_number' en la consulta" });
     }
-    
-    const count = await Services.countDocuments({ identification_number: identification_number });
-    const totalPrice = await Services.aggregate([
-      {
-        $match: { identification_number: identification_number }
-      },
-      {
-        $group: {
-          _id: null,
-          totalPrice: { $sum: "$price" }
-        }
-      }
-    ]);
 
-    const response = {
-      count,
-      price: totalPrice.length > 0 ? totalPrice[0].totalPrice : 0
-    };
+    const services = await Services.find({ identification_number: identification_number });
 
-    res.json(response);
+    res.json({ services });
   } catch (error) {
-    console.log("Error:", error);
+    console.error("Error:", error);
     res.status(500).json({ error: "Error al realizar la consulta en la base de datos" });
   }
 });
