@@ -102,7 +102,7 @@ app.post("/user/services/guardado", async (req, res) => {
   }
 });
 
-app.get("/user/services/count", async (req, res) => {
+app.get("/user/services/stats", async (req, res) => {
   try {
     const { identification_number } = req.query;
 
@@ -111,12 +111,29 @@ app.get("/user/services/count", async (req, res) => {
     }
     
     const count = await Services.countDocuments({ identification_number: identification_number });
+    const totalPrice = await Services.aggregate([
+      {
+        $match: { identification_number: identification_number }
+      },
+      {
+        $group: {
+          _id: null,
+          totalPrice: { $sum: "$price" }
+        }
+      }
+    ]);
 
-    res.json({ count });
+    const response = {
+      count,
+      price: totalPrice.length > 0 ? totalPrice[0].totalPrice : 0
+    };
+
+    res.json(response);
   } catch (error) {
     console.log("Error:", error);
     res.status(500).json({ error: "Error al realizar la consulta en la base de datos" });
   }
 });
+
 
 module.exports = { app, port };
